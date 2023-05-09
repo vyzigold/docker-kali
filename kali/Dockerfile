@@ -1,8 +1,16 @@
-FROM kalilinux/kali-rolling:amd64
+FROM kalilinux/kali-rolling:latest
 
-# hadolint ignore=DL3008
-RUN apt-get update \
+RUN  echo "Acquire::https::Verify-Peer \"false\";" >> /etc/apt/apt.conf.d/01autoremove \
+  && echo "Acquire::https::Verify-Host \"false\";" >> /etc/apt/apt.conf.d/01autoremove \
+  && cat /etc/apt/apt.conf.d/* \
+  && apt-get update \
   && apt-get install --no-install-recommends -y \
+	 hydra-gtk \
+	 ssh \
+	 wordlists \
+	 vim \
+	 seclists \
+	 masscan \
      curl \
      dnsutils \
      emacs \
@@ -14,6 +22,5 @@ RUN apt-get update \
      smbclient \
      traceroute \
      wget \
-  && apt-get --purge remove -y .\*-doc$ \
-  && apt-get clean -y \
+     libpcap-dev \
   && rm -rf /var/lib/apt/lists/*
